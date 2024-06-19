@@ -115,6 +115,7 @@ new P5((p5) => {
     p5.noStroke();
     p5.textFont("Noto Sans JP");
     p5.textSize(fontSize)
+    p5.textAlign(p5.LEFT,p5.TOP)
   };
 
   // ビートにあわせて背景を、発声にあわせて歌詞を表示
@@ -201,10 +202,10 @@ new P5((p5) => {
     blackOutBlocks.forEach(bBlock=>{
       timeSpanner.some(item=>{
         const [sT,eT,xI,yI,xB] = item;
-        if (bBlock.startTime >= sT-1000) {
-          if (bBlock.startTime <= eT+1000) {
+        if (bBlock.startTime >= sT-10) {
+          if (bBlock.startTime <= eT+10) {
             p5.fill(0)
-            p5.rect((xI+(bBlock.startTime-sT)*xB+margin,yI+margin,(bBlock.endTime-bBlock.startTime)*xB,fontSize))
+            p5.rect(xI+(bBlock.startTime-sT)*xB+margin,yI+margin,(bBlock.endTime-bBlock.startTime)*xB,fontSize)
             return true
           }
         }
