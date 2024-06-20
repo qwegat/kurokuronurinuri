@@ -102,6 +102,16 @@ document.getElementById("changeSong").addEventListener("click", () => {
 */
 
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext
+const aContext = new AudioContext()
+if (aContext.state !== 'running') {
+  aContext.resume()
+}
+aContext.onstatechange = () => {
+  if(aContext.state !== 'running') {
+    aContext.resume()
+  }
+}
 // p5.js を初期化
 new P5((p5) => {
   const deg2rad = (deg) => deg * (Math.PI / 180);
@@ -143,7 +153,6 @@ new P5((p5) => {
   let lastMouseIsPressed = false
 
 
-  let aContext = new AudioContext()
   let osc = aContext.createOscillator()
   let gain = aContext.createGain()
   gain.gain.setValueAtTime(0.4,aContext.currentTime)
@@ -305,6 +314,8 @@ new P5((p5) => {
     p5.text(String(currentPage+1),width/2,textAreaHeight+marginY+25)
     p5.textSize(fontSize)
     p5.textAlign(p5.LEFT,p5.BASELINE)
+
+    p5.text(aContext.state,100,100)
     switch (animeInitFlag) {
       case 0:
         return;
