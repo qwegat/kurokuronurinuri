@@ -140,6 +140,8 @@ new P5((p5) => {
 
   let seeking = false
 
+  let lastMouseIsPressed = false
+
 
   let aContext = new AudioContext()
   let osc = aContext.createOscillator()
@@ -203,6 +205,7 @@ new P5((p5) => {
     }
   }
   p5.mouseReleased = () => {
+    touchedP = false
     if (!player || !player.video || animeInitFlag != 2) {
       return;
     }
@@ -445,7 +448,7 @@ new P5((p5) => {
           if (Math.abs(kuronuriCarret+fillTo-kuronuriEnd) < 5) {
             drawWidth -= 2
           }
-          p5.fill(0,0,0,230)
+          p5.fill(0)
           p5.rect(drawStart,yI+marginY,drawWidth,fontSize)
           kuronuriCarret += fillTo
           if (Math.abs(kuronuriCarret-kuronuriEnd) < 5) {
@@ -465,7 +468,7 @@ new P5((p5) => {
       p5.noStroke()
       
 
-      if ((mouseIsPressed/* || p5.touches.length>0*/) && lastCursorTime != -1 && lastCursorLine != -1) {
+      if ((mouseIsPressed/* || p5.touches.length>0*/) && lastMouseIsPressed && lastCursorTime != -1 && lastCursorLine != -1) {
         if (lastCursorLine == cursorLine) {
           let lSideOrder = 0
           let rSideOrder = 0
@@ -580,6 +583,7 @@ new P5((p5) => {
 
     lastCursorLine = cursorLine+0
     lastCursorTime = cursorTime+0
+    lastMouseIsPressed = mouseIsPressed
   };
 });
 
