@@ -69,6 +69,32 @@ let p5Instance = null;
 const aContext =
   new AudioContext() ||
   new (window.AudioContext || window.webkitAudioContext)();
+
+
+window.addEventListener(
+  "touchmove",
+  function (event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    }
+    aContext.resume();
+  },
+  { passive: false }
+);
+window.addEventListener(
+  "touchstart",
+  function (event) {
+    if (event.target.tagName != "SELECT") {
+      if (event.preventDefault) {
+        event.preventDefault();
+      }
+    }
+    aContext.resume();
+  },
+  { passive: false }
+);
+
+
 let osc = aContext.createOscillator();
 let gain = aContext.createGain();
 gain.gain.setValueAtTime(0.4, aContext.currentTime);
@@ -90,7 +116,6 @@ function refreshP5() {
   while (iP < player.video.phraseCount) {
     let iW = 0;
     const phrase = player.video.getPhrase(iP);
-    console.log(phrase)
     const words = [];
     while (iW < phrase.wordCount) {
       const word = phrase.getWord(iW);
@@ -168,7 +193,7 @@ function refreshP5() {
 
     let truePlaying = false;
 
-    let lastMillis = 0;
+    let lastMillis = p5.millis();
 
 
     let beeping = false;
@@ -458,6 +483,8 @@ function refreshP5() {
             position = player.mediaPosition;
           }
         }
+      } else {
+        position = player.mediaPosition
       }
       if (seeking) {
         position = player.mediaPosition;
@@ -523,8 +550,8 @@ function refreshP5() {
       let muteFlag = false;
       blackOutBlocks.forEach((bBlock) => {
         if (
-          bBlock.startTime - 120 <= position &&
-          bBlock.endTime - 70 >= position
+          bBlock.startTime - 40-(aContext.baseLatency + (aContext.outputLatency || 0)) <= position &&
+          bBlock.endTime - 50-(aContext.baseLatency + (aContext.outputLatency || 0)) >= position
         ) {
           muteFlag = true;
         }
@@ -574,6 +601,8 @@ function refreshP5() {
         p5.strokeWeight(2);
         p5.stroke(255);
         p5.line(mouseX, cursorLine, mouseX, cursorLine + fontSize);
+
+
         p5.noStroke();
 
         if (
@@ -740,23 +769,3 @@ function refreshP5() {
     };
   });
 }
-
-window.addEventListener(
-  "touchmove",
-  function (event) {
-    if (event.preventDefault) {
-      event.preventDefault();
-    }
-  },
-  { passive: false }
-);
-window.addEventListener(
-  "touchstart",
-  function (event) {
-    if (event.preventDefault) {
-      event.preventDefault();
-    }
-    aContext.resume();
-  },
-  { passive: false }
-);
