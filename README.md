@@ -1,45 +1,33 @@
-# TextAlive App API p5.js example
+# 制限解除
+## 概要
+- [初音ミク「マジカルミライ 2024」 プログラミング・コンテスト](https://magicalmirai.com/2024/procon/)応募作品です
+- 対象となる6曲全てに対応しており、ドロップダウンメニューから切り替え可能です
+- コンセプトは**制限と自由**で、選択された曲の歌詞がデフォルトでは**黒塗り**状態になっており当該箇所の再生中は規制音が鳴る(**制限**)のを、ユーザーの手によって取り除く(**自由**)アプリケーションとなります
 
-TextAlive App API のサンプルコードで、 [p5.js](https://p5js.org/) を使った作例です。CodePenにアクセスすると、Webブラウザ上でこのアプリケーションのソースコードを編集できます。
+![image](https://github.com/qwegat/kurokuronurinuri/assets/63029208/7623aa66-9ed0-44ee-bb09-23da87a8b42e)
 
-- デモページ: https://textalivejp.github.io/textalive-app-p5js/
-- CodePen: https://codepen.io/arcatdmz/pen/eYZXLbd
+## 使い方
+- 画面左上のドロップダウンメニューから曲を選べます
+- 歌詞上に存在する黒塗り部分をドラッグすることで規制を除去できます
+- 画面右のコントロールバーで再生状況を操作できます
 
-TextAlive ホストと接続された状態をテストするには [TextAlive App Debugger](https://developer.textalive.jp/app/run/?ta_app_url=https%3A%2F%2Ftextalivejp.github.io%2Ftextalive-app-p5js%2F&ta_song_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DXSLhsjepelI) のページにアクセスしてください。
+## 動作環境
+ひとまず以下の環境で動作を確認しています:
+- Windows(Chrome, Firefox)
+- iOS(Chrome, Safari)
+- Android(Chrome)
 
-![sample](screenshots/p5js-10fps-640.gif)
+ただし安定性にはムラがあり、簡単に表記すると`Windows(Chrome)>Windows(Firefox)>>Android>>>>>>>iOS(Chrome)>>>iOS(Safari)`といったところです
 
-## 違う楽曲で試すには
+## ビルドなど
+- 基本的に[TextAlive公式のp5.js作例](https://github.com/TextAliveJp/textalive-app-p5js)のコードを改造して作成したので、当該リポジトリと同じ感じにコマンドを打てば動くはずです
+  - ex. `npm run build`でビルド
+  - 周辺環境もそのままなのでParcelでビルドすることになります
+- 開発中は`npm run dev`したうえで[Localtunnel](https://theboroer.github.io/localtunnel-www/)上で`localhost:1234`を解放してTextAliveに登録することでテストしていました
+  - 最初は公式ドキュメントにあったngrokを使っていましたが、早くも帯域制限に達したためLocaltunnelに切り替えた形です
+  - コンテストの応募規約上完全な公開ページとしてのテストは行っていませんが多分動くと思います
 
-TextAlive App API で開発されたWebアプリケーションは、（特定の楽曲向けに作り込んでいない限り）URLのクエリパラメタで `ta_song_url={楽曲のURL}` を指定すると異なる楽曲で演出を試せます。
-
-- [愛されなくても君がいる by ピノキオピー feat. 初音ミク](https://textalivejp.github.io/textalive-app-p5js/?ta_song_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DygY2qObZv24)
-- [ブレス・ユア・ブレス by 和田たけあき feat. 初音ミク](https://textalivejp.github.io/textalive-app-p5js/?ta_song_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Da-Nf3QUFkOU)
-
-## 開発
-
-[Node.js](https://nodejs.org/) をインストールしている環境で以下のコマンドを実行すると、開発用サーバが起動します。
-
-```sh
-npm install
-npm run dev
-```
-
-## ビルド
-
-以下のコマンドで `docs` 以下にビルド済みファイルが生成されます。 [サンプルコードのデモページ](https://textalivejp.github.io/textalive-app-p5js/) は [GitHub Pages](https://pages.github.com/) で、このリポジトリの `docs` 以下のファイルが提供されています。
-
-```sh
-npm run build
-```
-
-## TextAlive App API
-
-![TextAlive](https://i.gyazo.com/thumb/1000/5301e6f642d255c5cfff98e049b6d1f3-png.png)
-
-TextAlive App API は、音楽に合わせてタイミングよく歌詞が動くWebアプリケーション（リリックアプリ）を開発できるJavaScript用のライブラリです。
-
-TextAlive App API について詳しくはWebサイト [TextAlive for Developers](https://developer.textalive.jp/) をご覧ください。
-
----
-https://github.com/TextAliveJp/textalive-app-p5js
+## 使用ライブラリ
+- `parcel`
+- `p5`
+- `textalive-app-api`
