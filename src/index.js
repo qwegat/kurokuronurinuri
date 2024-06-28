@@ -1,6 +1,51 @@
 import P5 from "p5";
 import { Player, Ease } from "textalive-app-api";
 
+const songStractures = {
+  "https://piapro.jp/t/hZ35/20240130103028": {
+    beatId: 4592293,
+    chordId: 2727635,
+    repetitiveSegmentId: 2824326,
+    lyricId: 59415,
+    lyricDiffId: 13962,
+  },
+  "https://piapro.jp/t/--OD/20240202150903": {
+    beatId: 4592296,
+    chordId: 2727636,
+    repetitiveSegmentId: 2824327,
+    lyricId: 59416,
+    lyricDiffId: 13963,
+  },
+  "https://piapro.jp/t/XiaI/20240201203346": {
+    beatId: 4592297,
+    chordId: 2727637,
+    repetitiveSegmentId: 2824328,
+    lyricId: 59417,
+    lyricDiffId: 13964,
+  },
+  "https://piapro.jp/t/Rejk/20240202164429": {
+    beatId: 4592298,
+    chordId: 2727638,
+    repetitiveSegmentId: 2824329,
+    lyricId: 59418,
+    lyricDiffId: 13965,
+  },
+  "https://piapro.jp/t/ELIC/20240130010349": {
+    beatId: 4592299,
+    chordId: 2727639,
+    repetitiveSegmentId: 2824330,
+    lyricId: 59419,
+    lyricDiffId: 13966,
+  },
+  "https://piapro.jp/t/xEA7/20240202002556": {
+    beatId: 4592300,
+    chordId: 2727640,
+    repetitiveSegmentId: 2824331,
+    lyricId: 59420,
+    lyricDiffId: 13967
+  },
+};
+
 // プレイヤーの初期化 / Initialize TextAlive Player
 let player = new Player({
   // トークンは https://developer.textalive.jp/profile で取得したものを使う
@@ -12,10 +57,10 @@ let player = new Player({
 
 onMusicChange = (e) => {
   player.createFromSongUrl(e.target.value, {
-    video: {},
+    video: songStractures[e.target.value],
   });
   player.requestMediaSeek(0);
-  player.requestPause();
+  player.requestStop();
   refreshP5()
 }
 
@@ -24,7 +69,7 @@ player.addListener({
   onAppReady: (app) => {
     if (!app.managed) {
       player.createFromSongUrl("https://piapro.jp/t/ELIC/20240130010349", {
-        video: {},
+        video: songStractures["https://piapro.jp/t/ELIC/20240130010349"],
       });
       document.querySelector("#control").className = "active";
     } else {
@@ -252,6 +297,9 @@ function refreshP5() {
           truePlaying = true;
           if (!beeping && !player.isPlaying) {
             player.requestPlay();
+            if (player.mediaPosition < 1) {
+              player.requestMediaSeek(0)
+            }
           }
         }
       } else if (hoveringSlider) {
@@ -473,6 +521,8 @@ function refreshP5() {
           animeInitFlag = 2;
           break;
       }
+      console.log(player.mediaPosition)
+      console.log(player.videoPosition);
       if (truePlaying) {
         if (beeping) {
           position = Math.min(player.video.duration, position + deltaT);
